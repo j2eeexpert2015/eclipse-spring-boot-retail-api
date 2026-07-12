@@ -1,6 +1,6 @@
 package org.eclipsefeaturesdemo.eclipsefeatures.editing;
 
-public class ProductCodeGenerationDemo {
+public class DemoProduct{
 
     private String sku;
     private String name;
