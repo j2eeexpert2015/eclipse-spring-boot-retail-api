@@ -19,6 +19,7 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+    	// TODO: review validation
         if (productRepository.count() > 0) {
             return;
         }

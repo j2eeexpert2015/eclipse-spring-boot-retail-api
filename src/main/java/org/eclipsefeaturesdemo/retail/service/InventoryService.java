@@ -42,6 +42,7 @@ public class InventoryService {
 
     @Transactional
     public StockAdjustmentResponse adjustStock(StockAdjustmentRequest request) {
+    	// TODO: review validation
         if (request.quantity() == 0) {
             throw new IllegalArgumentException("Stock adjustment quantity cannot be zero");
         }

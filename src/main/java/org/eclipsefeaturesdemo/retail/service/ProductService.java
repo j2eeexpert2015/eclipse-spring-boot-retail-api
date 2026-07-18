@@ -52,6 +52,7 @@ public class ProductService {
 
     @Transactional
     public ProductResponse create(ProductRequest request) {
+    	// TODO: review validation
         Product product = new Product(
                 request.name(),
                 request.category(),
