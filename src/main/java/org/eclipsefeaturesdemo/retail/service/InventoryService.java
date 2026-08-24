@@ -63,10 +63,13 @@ public class InventoryService {
                 request.quantity(),
                 request.reason(),
                 Instant.now());
+        
+        Integer responseQuantity = Integer.valueOf(updatedQuantity);
+
 
         StockAdjustment savedAdjustment = stockAdjustmentRepository.save(adjustment);
 
-        return toResponse(savedAdjustment, updatedQuantity);
+        return toResponse(savedAdjustment, responseQuantity);
     }
 
     private StockAdjustmentResponse toResponse(StockAdjustment adjustment, Integer availableQuantityAfterAdjustment) {
