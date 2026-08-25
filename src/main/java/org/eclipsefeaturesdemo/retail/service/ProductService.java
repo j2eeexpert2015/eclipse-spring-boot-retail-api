@@ -1,8 +1,11 @@
 package org.eclipsefeaturesdemo.retail.service;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipsefeaturesdemo.retail.config.RetailProperties;
+import org.eclipsefeaturesdemo.retail.dto.InventoryReportRow;
 import org.eclipsefeaturesdemo.retail.dto.ProductRequest;
 import org.eclipsefeaturesdemo.retail.dto.ProductResponse;
 import org.eclipsefeaturesdemo.retail.exception.ProductNotFoundException;
@@ -52,7 +55,7 @@ public class ProductService {
 
     @Transactional
     public ProductResponse create(ProductRequest request) {
-    	// TODO: review validation
+        // TODO: review validation
         Product product = new Product(
                 request.name(),
                 request.category(),
@@ -61,6 +64,33 @@ public class ProductService {
                 request.active() == null || request.active());
 
         return toResponse(productRepository.save(product));
+    }
+
+    public List<InventoryReportRow> generateInventoryReport() {
+        List<Product> products =
+                productRepository.findByActiveTrueOrderByNameAsc();
+
+        List<InventoryReportRow> reportRows = new ArrayList<>();
+
+        for (Product product : products) {
+            BigDecimal inventoryValue = product.getPrice()
+                    .multiply(BigDecimal.valueOf(
+                            product.getAvailableQuantity()));
+
+            boolean lowStock = product.getAvailableQuantity()
+                    <= retailProperties.lowStockThreshold();
+
+            reportRows.add(new InventoryReportRow(
+                    product.getId(),
+                    product.getName(),
+                    product.getCategory(),
+                    product.getPrice(),
+                    product.getAvailableQuantity(),
+                    inventoryValue,
+                    lowStock));
+        }
+
+        return reportRows;
     }
 
     private ProductResponse toResponse(Product product) {
@@ -74,3 +104,4 @@ public class ProductService {
                 product.isActive());
     }
 }
+

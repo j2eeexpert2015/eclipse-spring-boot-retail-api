@@ -2,6 +2,7 @@ package org.eclipsefeaturesdemo.retail.controller;
 
 import java.util.List;
 
+import org.eclipsefeaturesdemo.retail.dto.InventoryReportRow;
 import org.eclipsefeaturesdemo.retail.dto.ProductRequest;
 import org.eclipsefeaturesdemo.retail.dto.ProductResponse;
 import org.eclipsefeaturesdemo.retail.model.ProductCategory;
@@ -47,5 +48,10 @@ public class ProductController {
     @ResponseStatus(HttpStatus.CREATED)
     public ProductResponse create(@Valid @RequestBody ProductRequest request) {
         return productService.create(request);
+    }
+
+    @GetMapping("/inventory-report")
+    public List<InventoryReportRow> generateInventoryReport() {
+        return productService.generateInventoryReport();
     }
 }
