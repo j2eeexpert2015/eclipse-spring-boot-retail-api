@@ -2,10 +2,12 @@ package org.eclipsefeaturesdemo.retail.debugging.docker;
 
 import org.eclipsefeaturesdemo.retail.dto.ProductResponse;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 @Service
+@ConditionalOnProperty(name = "retail.peer-url")
 public class PeerProductService {
 
     private final RestClient restClient;
@@ -13,6 +15,7 @@ public class PeerProductService {
     public PeerProductService(
             RestClient.Builder restClientBuilder,
             @Value("${retail.peer-url}") String peerUrl) {
+
         this.restClient = restClientBuilder
                 .baseUrl(peerUrl)
                 .build();
