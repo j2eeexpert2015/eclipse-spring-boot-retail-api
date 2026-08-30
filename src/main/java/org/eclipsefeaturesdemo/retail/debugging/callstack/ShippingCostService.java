@@ -17,11 +17,4 @@ public class ShippingCostService {
         return shippingCost;
     }
 
-    /*
-    public double calculate(double weightKg, double distanceKm) {
-        return BASE_CHARGE
-                + (weightKg * CHARGE_PER_KILOGRAM)
-                + (distanceKm * CHARGE_PER_KILOMETRE);
-    }
-    */
 }
