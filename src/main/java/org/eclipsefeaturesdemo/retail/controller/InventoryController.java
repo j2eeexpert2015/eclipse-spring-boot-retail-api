@@ -6,6 +6,7 @@ import org.eclipsefeaturesdemo.retail.dto.StockAdjustmentRequest;
 import org.eclipsefeaturesdemo.retail.dto.StockAdjustmentResponse;
 import org.eclipsefeaturesdemo.retail.service.InventoryService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +31,31 @@ public class InventoryController {
     @ResponseStatus(HttpStatus.CREATED)
     public StockAdjustmentResponse adjustStock(@Valid @RequestBody StockAdjustmentRequest request) {
         return inventoryService.adjustStock(request);
+    }
+    
+    @PostMapping("/adjustments/caught")
+    public ResponseEntity<String> adjustStockCaught(
+            @Valid @RequestBody StockAdjustmentRequest request) {
+
+        try {
+            inventoryService.adjustStock(request);
+            return ResponseEntity.ok("Adjustment completed");
+        } catch (IllegalArgumentException exception) {
+            return ResponseEntity.badRequest()
+                    .body("Caught: " + exception.getMessage());
+        }
+    }
+    
+    @PostMapping("/adjustments/uncaught")
+    public ResponseEntity<String> uncaughtExceptionDemo() {
+
+        Thread thread = new Thread(() -> {
+            throw new IllegalArgumentException("Uncaught exception demo");
+        }, "exception-breakpoint-demo");
+
+        thread.start();
+
+        return ResponseEntity.ok("Uncaught exception started");
     }
 
     @GetMapping("/adjustments")
