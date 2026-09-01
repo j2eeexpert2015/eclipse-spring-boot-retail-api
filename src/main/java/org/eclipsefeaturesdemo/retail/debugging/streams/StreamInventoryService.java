@@ -22,6 +22,10 @@ public class StreamInventoryService {
         this.retailProperties = retailProperties;
     }
 
+    public List<String> findActiveProductNames() {
+        return productRepository.findAll().stream().filter(product -> product.isActive()).map(product -> product.getName()).sorted((left, right) -> left.compareToIgnoreCase(right)).toList();
+    }
+
     public List<InventoryReportRow> findTopInventory(int limit) {
         if (limit < 1) {
             throw new IllegalArgumentException("Limit must be at least 1");
@@ -46,7 +50,7 @@ public class StreamInventoryService {
                             inventoryValue,
                             lowStock);
                 })
-                .limit(limit) // Deliberate pipeline-order defect
+                .limit(limit)
                 .sorted(Comparator.comparing(
                         InventoryReportRow::inventoryValue).reversed())
                 .toList();

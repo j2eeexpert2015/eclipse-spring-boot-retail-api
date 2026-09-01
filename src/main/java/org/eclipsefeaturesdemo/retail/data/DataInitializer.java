@@ -58,5 +58,12 @@ public class DataInitializer implements CommandLineRunner {
                 new BigDecimal("39.99"),
                 8,
                 true));
+        //Adding one inactive product 
+        productRepository.save(new Product(
+                "Legacy USB Hub",
+                ProductCategory.ELECTRONICS,
+                new BigDecimal("15.99"),
+                6,
+                false));
     }
 }

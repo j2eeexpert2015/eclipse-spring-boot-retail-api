@@ -18,6 +18,11 @@ public class StreamInventoryController {
         this.streamInventoryService = streamInventoryService;
     }
 
+    @GetMapping("/active-product-names")
+    public List<String> findActiveProductNames() {
+        return streamInventoryService.findActiveProductNames();
+    }
+
     @GetMapping("/top-inventory")
     public List<InventoryReportRow> findTopInventory(
             @RequestParam(defaultValue = "3") int limit) {
