@@ -44,12 +44,9 @@ public class StreamInventoryService {
         return productRepository.findByActiveTrueOrderByNameAsc()
                 .stream()
                 .map(product -> {
-                    BigDecimal inventoryValue = product.getPrice()
-                            .multiply(BigDecimal.valueOf(
-                                    product.getAvailableQuantity()));
+                    BigDecimal inventoryValue = product.getPrice().multiply(BigDecimal.valueOf(product.getAvailableQuantity()));
 
-                    boolean lowStock = product.getAvailableQuantity()
-                            <= retailProperties.lowStockThreshold();
+                    boolean lowStock = product.getAvailableQuantity()<= retailProperties.lowStockThreshold();
 
                     return new InventoryReportRow(
                             product.getId(),
