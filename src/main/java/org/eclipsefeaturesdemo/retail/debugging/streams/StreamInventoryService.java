@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.eclipsefeaturesdemo.retail.config.RetailProperties;
 import org.eclipsefeaturesdemo.retail.dto.InventoryReportRow;
+import org.eclipsefeaturesdemo.retail.dto.ProductActivityRow;
 import org.eclipsefeaturesdemo.retail.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +23,17 @@ public class StreamInventoryService {
         this.retailProperties = retailProperties;
     }
 
+    public List<ProductActivityRow> findAllProductActivity() {
+        return productRepository.findAll()
+                .stream()
+                .map(product -> new ProductActivityRow(
+                        product.getName(),
+                        product.isActive()))
+                .toList();
+    }
+
     public List<String> findActiveProductNames() {
-        return productRepository.findAll().stream().filter(product -> product.isActive()).map(product -> product.getName()).sorted((left, right) -> left.compareToIgnoreCase(right)).toList();
+        return productRepository.findAll().stream().filter(product -> product.isActive()).map(product -> product.getName()).sorted(String.CASE_INSENSITIVE_ORDER).toList();
     }
 
     public List<InventoryReportRow> findTopInventory(int limit) {

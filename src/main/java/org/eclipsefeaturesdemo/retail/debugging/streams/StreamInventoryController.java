@@ -3,6 +3,7 @@ package org.eclipsefeaturesdemo.retail.debugging.streams;
 import java.util.List;
 
 import org.eclipsefeaturesdemo.retail.dto.InventoryReportRow;
+import org.eclipsefeaturesdemo.retail.dto.ProductActivityRow;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +17,11 @@ public class StreamInventoryController {
 
     public StreamInventoryController(StreamInventoryService streamInventoryService) {
         this.streamInventoryService = streamInventoryService;
+    }
+
+    @GetMapping("/all-products")
+    public List<ProductActivityRow> findAllProductActivity() {
+        return streamInventoryService.findAllProductActivity();
     }
 
     @GetMapping("/active-product-names")
