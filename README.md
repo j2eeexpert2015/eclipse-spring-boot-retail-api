@@ -15,6 +15,8 @@ Set up a workspace properly, write Java far faster than you're typing it now, re
 without breaking things, and debug your first program instead of adding print
 statements.
 
+→ **[Enrol free](https://learningfromexperience.trainercentralsite.com/course/eclipse-ide-for-java-developers-getting-started)**
+
 ### 📙 [Go further — Eclipse IDE for Java Developers: Beginner to Advanced](https://learningfromexperience.trainercentralsite.com/course/eclipse-ide-for-java-developers-beginner-to-advanced)
 
 Everything above, plus **Maven** when the build breaks, the full **Git and GitHub**
@@ -23,8 +25,7 @@ most developers never learn — conditional breakpoints, exception breakpoints,
 tracepoints, Hot Code Replace, and attaching to an application already running on
 another machine.
 
-> **Already enrolled?** Clone this repository — every lesson works against it.
-> Jump to [Open in Eclipse](#open-in-eclipse).
+→ **[Enrol in the full course](https://learningfromexperience.trainercentralsite.com/course/eclipse-ide-for-java-developers-beginner-to-advanced)**
 
 ---
 
