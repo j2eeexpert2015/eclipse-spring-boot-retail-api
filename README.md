@@ -1,478 +1,142 @@
-# Eclipse Spring Boot Retail API
+# Retail Product & Inventory API
 
-A small **Retail Product and Inventory API** designed for Eclipse, Spring Tools / STS, Docker, JUnit, Actuator, and future Spring Boot migration demos.
+A small, deliberately readable Spring Boot service used as the demo project throughout
+my Eclipse IDE courses — building, navigating, refactoring, running and debugging real
+Java code rather than toy examples.
 
-## Baseline
+## Learn Eclipse properly
 
-- Java 21
-- Spring Boot 3.5.16
-- Maven
-- Spring Web
-- Spring Data JPA
-- Validation
-- Actuator
-- H2 for default local run
-- PostgreSQL for Docker Compose
-- JUnit 5 / Mockito / MockMvc
-- Optional Testcontainers test
+Found this from one of my videos? Those cover one feature at a time. The courses cover
+the whole IDE, in order, hands-on against this project.
 
-## Project Structure
+### ▶ [Start free — Eclipse IDE for Java Developers: Getting Started](https://learningfromexperience.trainercentralsite.com/course/eclipse-ide-for-java-developers-getting-started)
 
-```text
-org.eclipsefeaturesdemo.retail
-│
-├── RetailApiApplication.java
-├── controller
-│   ├── ProductController.java
-│   └── InventoryController.java
-├── service
-│   ├── ProductService.java
-│   └── InventoryService.java
-├── repository
-│   ├── ProductRepository.java
-│   └── StockAdjustmentRepository.java
-├── model
-│   ├── Product.java
-│   ├── StockAdjustment.java
-│   └── ProductCategory.java
-├── dto
-│   ├── ProductRequest.java
-│   ├── ProductResponse.java
-│   ├── StockAdjustmentRequest.java
-│   └── StockAdjustmentResponse.java
-├── config
-│   └── RetailProperties.java
-├── exception
-│   ├── ProductNotFoundException.java
-│   └── GlobalExceptionHandler.java
-└── data
-    └── DataInitializer.java
-```
+Set up a workspace properly, write Java far faster than you're typing it now, refactor
+without breaking things, and debug your first program instead of adding print
+statements.
 
-## Design Notes
+### ▶ [Go further — Eclipse IDE for Java Developers: Beginner to Advanced](https://learningfromexperience.trainercentralsite.com/course/eclipse-ide-for-java-developers-beginner-to-advanced)
 
-This project intentionally keeps the domain flat and demo-friendly.
+Everything above, plus **Maven** when the build breaks, the full **Git and GitHub**
+workflow including pull requests, **Spring Boot with Spring Tools**, and the debugging
+most developers never learn — conditional breakpoints, exception breakpoints,
+tracepoints, Hot Code Replace, and attaching to an application already running on
+another machine.
 
-- `Product` is the main retail item.
-- `StockAdjustment` stores `productId` as a simple `Long`.
-- There are no JPA relationships.
-- There is no cart, order, payment, customer, login, or security.
-- Stock mutation belongs to `InventoryController` / `InventoryService`, not `ProductController`.
+> **Already enrolled?** Clone this repository — every lesson works against it.
+> Jump to [Open in Eclipse](#open-in-eclipse).
 
-Dependency flow:
+---
 
-```text
-ProductController
-→ ProductService
-→ ProductRepository
-```
-
-```text
-InventoryController
-→ InventoryService
-→ ProductRepository
-→ StockAdjustmentRepository
-```
-
-This gives a clean structure for Spring Tools navigation demos.
-
-## Prerequisites
-
-Install:
-
-```text
-Java 21
-Maven 3.9+
-Docker Desktop, optional for Docker lessons
-```
-
-Check versions:
+## Quick start
 
 ```bash
-java -version
-mvn -version
-docker version
+git clone https://github.com/j2eeexpert2015/eclipse-spring-boot-retail-api.git
+cd eclipse-spring-boot-retail-api
+./mvnw spring-boot:run
 ```
 
-## Build
+The API starts on **http://localhost:8080** using an in-memory H2 database, seeded with
+sample data. Nothing else to install.
 
-```bash
-mvn clean package
-```
-
-## Run Locally with H2
-
-```bash
-mvn spring-boot:run
-```
-
-Or run the packaged jar:
-
-```bash
-java -jar target/eclipse-spring-boot-retail-api-0.0.1-SNAPSHOT.jar
-```
-
-The app starts on:
-
-```text
-http://localhost:8080
-```
-
-## Test the API
-
-### Health
-
-```bash
-curl http://localhost:8080/actuator/health
-```
-
-### Get all products
+Verify it's up:
 
 ```bash
 curl http://localhost:8080/api/products
 ```
 
-Browser URL:
+<!-- VERIFY: confirm the base path matches your controllers -->
 
-```text
-http://localhost:8080/api/products
+---
+
+## Project structure
+
+```
+src/main/java/…
+├── controller/     REST endpoints
+├── service/        business logic — the layer most lessons debug through
+├── repository/     Spring Data JPA repositories
+├── model/          JPA entities
+└── dto/            request and response records
+
+src/main/resources/
+├── application.properties
+└── data.sql        sample data loaded at startup
+
+src/test/java/…     unit and integration tests
 ```
 
-### Get one product
+The domain is intentionally small — products and stock levels — so that no lesson is
+ever about understanding the business logic. It exists to be navigated, refactored,
+broken and debugged.
+
+<!-- VERIFY: adjust package names to match the repo -->
+
+---
+
+## API endpoints
+
+| Method | Path | Description |
+|---|---|---|
+| `GET` | `/api/products` | List all products |
+| `GET` | `/api/products/{id}` | Fetch one product |
+| `POST` | `/api/products` | Create a product |
+| `PUT` | `/api/products/{id}` | Update a product |
+| `DELETE` | `/api/products/{id}` | Delete a product |
+| `GET` | `/api/inventory/low-stock` | Products below the reorder threshold |
+
+<!-- VERIFY: replace with your actual endpoints -->
+
+H2 console while the app is running: **http://localhost:8080/h2-console**
+
+---
+
+## Open in Eclipse
+
+1. **File → Import → Maven → Existing Maven Projects**
+2. Select the cloned folder and click **Finish**
+3. Wait for Maven to resolve dependencies — the progress bar is bottom-right
+4. Right-click the project → **Run As → Spring Boot App**
+
+If you have **Spring Tools** installed, the project appears in the **Boot Dashboard**
+(Window → Show View → Other → Spring → Boot Dashboard), where you can start, stop,
+restart and debug it, and inspect live request mappings and beans.
+
+### If the project shows errors after import
+
+Most import problems are Maven problems, and nearly all of them are fixed by:
+
+**Right-click the project → Maven → Update Project → tick "Force Update of
+Snapshots/Releases" → OK**
+
+If that doesn't clear it, check that your installed JDK is **Java 21 or later**
+(Window → Preferences → Java → Installed JREs).
+
+---
+
+## Running the tests
 
 ```bash
-curl http://localhost:8080/api/products/1
+./mvnw test          # unit tests
+./mvnw verify        # includes Testcontainers integration tests — Docker must be running
 ```
 
-Browser URL:
+---
 
-```text
-http://localhost:8080/api/products/1
-```
+## Author
 
-### Get low-stock products
+**Ayan Dutta** — independent technical content creator. Twenty years building Java
+systems, now teaching the tools around them.
 
-```bash
-curl http://localhost:8080/api/products/low-stock
-```
+- **All courses** — [learningfromexperience.org/courses](https://learningfromexperience.org/courses/)
+- **YouTube** — [@LearningFromExperience](https://www.youtube.com/@LearningFromExperience)
+- **Medium** — [@mrayandutta](https://medium.com/@mrayandutta)
+- **Udemy** — [udemy.com/user/ayandutta](https://www.udemy.com/user/ayandutta/)
+- **Website** — [learningfromexperience.org](https://learningfromexperience.org)
 
-Browser URL:
+Questions about the project or the courses: open an
+[issue](https://github.com/j2eeexpert2015/eclipse-spring-boot-retail-api/issues) or
+email **j2eeexpert2015@gmail.com**.
 
-```text
-http://localhost:8080/api/products/low-stock
-```
-
-### Filter products by category
-
-```bash
-curl "http://localhost:8080/api/products?category=ELECTRONICS"
-```
-
-Browser URL:
-
-```text
-http://localhost:8080/api/products?category=ELECTRONICS
-```
-
-### Create a product
-
-```bash
-curl -X POST http://localhost:8080/api/products \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "USB-C Hub",
-    "category": "ELECTRONICS",
-    "price": 29.99,
-    "availableQuantity": 15,
-    "active": true
-  }'
-```
-
-### Create a stock adjustment
-
-Use a positive quantity to increase stock:
-
-```bash
-curl -X POST http://localhost:8080/api/inventory/adjustments \
-  -H "Content-Type: application/json" \
-  -d '{
-    "productId": 1,
-    "quantity": 5,
-    "reason": "New shipment received"
-  }'
-```
-
-Use a negative quantity to reduce stock:
-
-```bash
-curl -X POST http://localhost:8080/api/inventory/adjustments \
-  -H "Content-Type: application/json" \
-  -d '{
-    "productId": 1,
-    "quantity": -2,
-    "reason": "Damaged stock removed"
-  }'
-```
-
-### Get stock adjustments
-
-```bash
-curl http://localhost:8080/api/inventory/adjustments
-```
-
-Browser URL:
-
-```text
-http://localhost:8080/api/inventory/adjustments
-```
-
-### Get stock adjustments for one product
-
-```bash
-curl "http://localhost:8080/api/inventory/adjustments?productId=1"
-```
-
-Browser URL:
-
-```text
-http://localhost:8080/api/inventory/adjustments?productId=1
-```
-
-## Actuator URLs for Spring Tools / Runtime Lessons
-
-These are exposed in `application.properties`:
-
-```properties
-management.endpoints.web.exposure.include=health,info,mappings,beans
-```
-
-Useful URLs:
-
-```text
-http://localhost:8080/actuator/health
-http://localhost:8080/actuator/mappings
-http://localhost:8080/actuator/beans
-```
-
-## H2 Console
-
-H2 console is enabled for local demo use.
-
-URL:
-
-```text
-http://localhost:8080/h2-console
-```
-
-Use:
-
-```text
-JDBC URL: jdbc:h2:mem:retaildb
-User Name: sa
-Password: <empty>
-```
-
-## Run Tests
-
-Run all default tests:
-
-```bash
-mvn test
-```
-
-Run one test class:
-
-```bash
-mvn -Dtest=ProductServiceTest test
-```
-
-```bash
-mvn -Dtest=ProductControllerTest test
-```
-
-```bash
-mvn -Dtest=ProductRepositoryTest test
-```
-
-## Optional Testcontainers Test
-
-`ProductRepositoryPostgresTestcontainersTest` is included but disabled by default because it requires Docker.
-
-To use it in a lesson:
-
-1. Open the test class.
-2. Remove `@Disabled`.
-3. Make sure Docker Desktop is running.
-4. Run the test from Eclipse or Maven.
-
-Command:
-
-```bash
-mvn -Dtest=ProductRepositoryPostgresTestcontainersTest test
-```
-
-## Build Docker Image
-
-```bash
-docker build -t eclipse-spring-boot-retail-api:boot3 .
-```
-
-## Run Docker Container
-
-```bash
-docker run --rm -p 8080:8080 eclipse-spring-boot-retail-api:boot3
-```
-
-Test:
-
-```bash
-curl http://localhost:8080/api/products
-```
-
-## Run with Docker Compose and PostgreSQL
-
-Start:
-
-```bash
-docker compose up --build
-```
-
-Test:
-
-```bash
-curl http://localhost:8080/api/products
-```
-
-Stop and remove containers:
-
-```bash
-docker compose down
-```
-
-Stop and remove containers plus PostgreSQL volume:
-
-```bash
-docker compose down -v
-```
-
-## Eclipse / STS Usage
-
-### Import Project
-
-In Eclipse or STS:
-
-```text
-File → Import → Maven → Existing Maven Projects → Select project folder → Finish
-```
-
-Then:
-
-```text
-Right-click project → Maven → Update Project
-```
-
-### Run in Plain Eclipse
-
-```text
-Open RetailApiApplication.java
-Right-click → Run As → Java Application
-```
-
-### Debug in Plain Eclipse
-
-```text
-Set breakpoint in ProductController or InventoryService
-Right-click RetailApiApplication.java
-Debug As → Java Application
-```
-
-### Run from Boot Dashboard in STS / Spring Tools
-
-```text
-Window → Show View → Other → Boot Dashboard
-Select eclipse-spring-boot-retail-api
-Start / Stop / Restart / Debug
-```
-
-## Good Demo Files by Lesson
-
-### Boot Dashboard
-
-```text
-RetailApiApplication.java
-ProductController.java
-InventoryController.java
-```
-
-### Navigation
-
-```text
-ProductController → ProductService → ProductRepository
-InventoryController → InventoryService → ProductRepository + StockAdjustmentRepository
-GlobalExceptionHandler
-RetailProperties
-```
-
-### Code Completion and Validation
-
-```text
-ProductRequest.java
-StockAdjustmentRequest.java
-RetailProperties.java
-application.properties
-```
-
-### Live Bean Wiring / Runtime Info
-
-```text
-ProductService.java
-InventoryService.java
-ProductRepository.java
-StockAdjustmentRepository.java
-Actuator endpoints
-```
-
-### Docker
-
-```text
-Dockerfile
-.dockerignore
-compose.yaml
-application-docker.properties
-```
-
-### JUnit / Mockito / MockMvc
-
-```text
-ProductServiceTest.java
-InventoryServiceTest.java
-ProductControllerTest.java
-InventoryControllerTest.java
-ProductRepositoryTest.java
-StockAdjustmentRepositoryTest.java
-```
-
-## Future Branches
-
-Use tags for lesson checkpoints.
-
-Use branches only for divergent tracks:
-
-```text
-boot4-migration
-spring-ai
-```
-
-Suggested tags:
-
-```text
-l05-retail-api-base
-l06-boot-dashboard
-l07-navigation
-l08-code-completion-validation
-l09-live-bean-wiring
-l10-dockerfile
-l11-docker-compose
-l12-junit-basics
-l13-controller-service-repository-tests
-```
+If this project or the courses were useful, a ⭐ on the repository helps other
+developers find them.
