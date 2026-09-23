@@ -9,13 +9,13 @@ Java code rather than toy examples.
 Found this from one of my videos? Those cover one feature at a time. The courses cover
 the whole IDE, in order, hands-on against this project.
 
-### ▶ [Start free — Eclipse IDE for Java Developers: Getting Started](https://learningfromexperience.trainercentralsite.com/course/eclipse-ide-for-java-developers-getting-started)
+### 📗 [Start free — Eclipse IDE for Java Developers: Getting Started](https://learningfromexperience.trainercentralsite.com/course/eclipse-ide-for-java-developers-getting-started)
 
 Set up a workspace properly, write Java far faster than you're typing it now, refactor
 without breaking things, and debug your first program instead of adding print
 statements.
 
-### ▶ [Go further — Eclipse IDE for Java Developers: Beginner to Advanced](https://learningfromexperience.trainercentralsite.com/course/eclipse-ide-for-java-developers-beginner-to-advanced)
+### 📙 [Go further — Eclipse IDE for Java Developers: Beginner to Advanced](https://learningfromexperience.trainercentralsite.com/course/eclipse-ide-for-java-developers-beginner-to-advanced)
 
 Everything above, plus **Maven** when the build breaks, the full **Git and GitHub**
 workflow including pull requests, **Spring Boot with Spring Tools**, and the debugging
@@ -29,6 +29,8 @@ another machine.
 ---
 
 ## Quick start
+
+Requires **JDK 21 or later** and Git. Maven is included via the wrapper.
 
 ```bash
 git clone https://github.com/j2eeexpert2015/eclipse-spring-boot-retail-api.git
@@ -44,8 +46,6 @@ Verify it's up:
 ```bash
 curl http://localhost:8080/api/products
 ```
-
-<!-- VERIFY: confirm the base path matches your controllers -->
 
 ---
 
@@ -70,8 +70,6 @@ The domain is intentionally small — products and stock levels — so that no l
 ever about understanding the business logic. It exists to be navigated, refactored,
 broken and debugged.
 
-<!-- VERIFY: adjust package names to match the repo -->
-
 ---
 
 ## API endpoints
@@ -84,8 +82,6 @@ broken and debugged.
 | `PUT` | `/api/products/{id}` | Update a product |
 | `DELETE` | `/api/products/{id}` | Delete a product |
 | `GET` | `/api/inventory/low-stock` | Products below the reorder threshold |
-
-<!-- VERIFY: replace with your actual endpoints -->
 
 H2 console while the app is running: **http://localhost:8080/h2-console**
 
